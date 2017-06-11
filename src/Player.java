@@ -81,9 +81,20 @@ public class Player {
                        Card fifth, Card sixth) {
       Card[] bestSix = bestSixArr(first, second, third, fourth, fifth, sixth);
       double score = 0;
-      if(threePairTest(bestSix) > 10.0){
+
+
+
+      if(evenTest(bestSix) > 10.0){
+         score = evenTest(bestSix);
+      } else if(monarchyTest(bestSix) > 10.0){
+        score = monarchyTest(bestSix);
+      } else if(threePairTest(bestSix) > 10.0){
          score = threePairTest(bestSix);
-      }else if(fiveStraightTest(bestSix) == 7.0){
+      }else if(fullHouseTest(bestSix) > 9.0){
+         score = fullHouseTest(bestSix);
+      }else if(monoChromaTest(bestSix) == 8.0){
+         score = monoChromaTest(bestSix);
+      } else if(fiveStraightTest(bestSix) == 7.0){
          score = fiveStraightTest(bestSix);
       }else if(swingersTest(bestSix) == 6.0){
          score = swingersTest(bestSix);
@@ -265,13 +276,36 @@ public class Player {
       return 0.0;
    }
 
-   /*public int monoChromaTest(){
+   public double monoChromaTest(Card[] cardArr){
+      if(countColor(cardArr, "b") == 6 || countColor(cardArr, "r") == 6){
+         return 8.0;
+      } else {
+         return 0.0;
+      }
+   }
 
-   }*/
+   public double fullHouseTest(Card[] cardArr){
+      boolean flagOne = false;
+      boolean flagTwo = false;
+      double threeCard = 0;
+      double pair = 0 ;
+      for(int index = 0;index < 6;index++){
+         countValue(cardArr, cardArr[index].value);
+            if(countValue(cardArr, cardArr[index].value) == 3){
+               threeCard = cardArr[index].value;
+               flagOne = true;
+            }else if(countValue(cardArr, cardArr[index].value) == 2){
+               pair = cardArr[index].value;
+               flagTwo = true;
+            }
+      }
+      if(flagOne && flagTwo){
+         return 9.0 + (threeCard * .01)+ (pair * .0001) ;
+      } else{
+         return 0.0;
+      }
 
-   /*public int fullHouseTest(){
-
-   }*/
+   }
 
    public double threePairTest(Card[] cardArr) {
       //Pairvalue holds the value of each pair for comparison
@@ -309,13 +343,37 @@ public class Player {
       return result;
    }
 
-   /*public int monarchyTest(){
+   public double monarchyTest(Card[] cardArr){
+      int jackIndex = cardIndex(cardArr, "j");
+      int jackCount = countValue(cardArr, 11);
+      int queenCount = countValue(cardArr, 12);
+      int kingCount = countValue(cardArr, 13);
 
-   }*/
+      if(jackCount == 1 && queenCount == 1 && kingCount == 1) {
+         //Check if king and queen of same suite as jack exist
+         if (findSuit(cardArr, "j", cardArr[jackIndex].suite).contains("q") &&
+            findSuit(cardArr, "j", cardArr[jackIndex].suite).contains("k")) {
+            return 11.0;
+         }
+      }
+      return 0.0;
+   }
 
-   /*public int evenTest(){
-
-   }*/
+   public double evenTest(Card[] cardArr){
+      int evenCheck = 0;
+      double result;
+      for(int index = 0;index < 6;index++){
+         if(cardArr[index].value < 11 && cardArr[index].value % 2 == 0){
+            evenCheck++;
+         }
+      }
+      if(evenCheck == 6){
+         result = 12.0;
+      } else{
+         result = 0.0;
+      }
+      return result;
+   }
 
    /*public int sixStraightTest(){
 
@@ -417,8 +475,32 @@ public class Player {
       return cardValues;
    }
 
-   private boolean aceCheck(int[] valuesArr){
-      if
+   public int countColor(Card[] cardArr, String color){
+      int redCount = 0;
+      int blackCount = 0;
+
+      if (color.equals("r")) {
+         for(int index = 0;index < 6;index++){
+            if((cardArr[index].suite.equals("d"))||
+               cardArr[index].suite.equals("h")){
+               redCount++;
+            }
+         }return redCount;
+      }else if (color.equals("b")) {
+         for(int index = 0;index < 6;index++){
+            if((cardArr[index].suite.equals("c"))||
+               cardArr[index].suite.equals("s")){
+               redCount++;
+            }
+         }return redCount;
+      } else{
+         System.out.println("Color Does Not Exist");
+         return -1;
+      }
+
+
    }
+
+
 
 }
