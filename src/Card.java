@@ -47,9 +47,9 @@ public class Card {
             break;
          case "q": value = 12;
             break;
-         case "k": value = 14;
+         case "k": value = 13;
             break;
-         case "a": value = 15;
+         case "a": value = 14;
             break;
          default:
             System.out.println("This is not a valid card.");
