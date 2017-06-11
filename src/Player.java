@@ -84,9 +84,22 @@ public class Player {
 
 
 
-      if(evenTest(bestSix) > 10.0){
+
+
+
+      if(tripletsTest(bestSix) > 17.0){
+         score = tripletsTest(bestSix);
+      }else if(flushTest(bestSix) > 16.0){
+         score = flushTest(bestSix);
+      } else if(oddTest(bestSix) == 15.0){
+         score = oddTest(bestSix);
+      } else if(fourKindTest(bestSix) > 14.0){
+         score = fourKindTest(bestSix);
+      } else if(sixStraightTest(bestSix) > 13.0){
+         score = sixStraightTest(bestSix);
+      } else if(evenTest(bestSix) == 12.0){
          score = evenTest(bestSix);
-      } else if(monarchyTest(bestSix) > 10.0){
+      } else if(monarchyTest(bestSix) == 11.0){
         score = monarchyTest(bestSix);
       } else if(threePairTest(bestSix) > 10.0){
          score = threePairTest(bestSix);
@@ -375,25 +388,99 @@ public class Player {
       return result;
    }
 
-   /*public int sixStraightTest(){
+   public double sixStraightTest(Card[] cardArr){
+      int[] cardValues;
+      int repeatFlag = 0;
+      int count = 0;
+      double highCard = 0.0;
 
-   }*/
+      cardValues = cardsToValues(cardArr);
+      for(int index = 0;index < 5;index++){
+         if(repeatFlag > 0){return 0.0;}
+         // Sequential card is in numerical order or is a repeat
+         if(cardValues[index] == cardValues[index + 1] - 1){
+            count++;
+            if(count == 5){
+               highCard = cardValues[5] * .01;
+               return 13.0 + (highCard);
+            }
+         } else if(cardValues[index] == cardValues[index + 1]){
+            repeatFlag++;
+         }
+      }
+      return 0.0;
+   }
 
-   /*public int fourKindTest(){
+   public double fourKindTest(Card[]cardArr){
+      double value = 0;
+      for(int index = 0;index < 6;index++ ){
+         if(countValue(cardArr, cardArr[index].value) == 4){
+              value = cardArr[index].value;
+               return 14.0 + value * .01;
+         }
+      }
+      return 0.0;
+   }
 
-   }*/
+   public double oddTest(Card[] cardArr){
+      int oddCheck = 0;
+      double result;
+      for(int index = 0;index < 6;index++){
+         if(cardArr[index].value < 10 && cardArr[index].value % 2 == 1){
+            oddCheck++;
+         }
+      }
+      if(oddCheck == 6){
+         result = 15.0;
+      } else{
+         result = 0.0;
+      }
+      return result;
+   }
 
-   /*public int oddTest(){
 
-   }*/
 
-   /*public int flushTest(){
+   public double flushTest(Card[] cardArr){
+      int[] valuesArr;
+      String relatedCards = "";
+      int highCard = 0;
 
-   }*/
+      relatedCards = findSuit(cardArr,cardArr[0].face,cardArr[0].suite);
 
-   /*public int tripletsTest(){
+      valuesArr = cardsToValues(cardArr);
+      sort(valuesArr);
+      highCard = valuesArr[5];
 
-   }*/
+      if(relatedCards.length()== 5){
+
+         return 16.0 + highCard * 0.01;
+      } else{
+         return 0.0;
+      }
+   }
+
+   public double tripletsTest(Card[] cardArr){
+      int highThreeKind = 0;
+      int lowThreeKind = 0;
+      double result = 0.0;
+      int[] cardValues = cardsToValues(cardArr);
+
+      sort(cardValues);
+
+      //Check that first 3 cards and last 3 cards are three of kind
+      if(cardValues[0] == cardValues[1] && cardValues[1] == cardValues[2] &&
+         cardValues[3] == cardValues[4] && cardValues[4] == cardValues[5]){
+         lowThreeKind = cardValues[0];
+         highThreeKind = cardValues[5];
+      }
+
+      if(highThreeKind != 0) {
+         result = 17.0 + highThreeKind * .01 + lowThreeKind * .0001;
+      } else {
+         result = 0.0;
+      }
+      return result;
+   }
 
    /*public int overfullHouseTest(){
 
