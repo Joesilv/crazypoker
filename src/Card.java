@@ -41,15 +41,15 @@ public class Card {
             break;
          case "9": value = 9;
             break;
-         case "10": value = 10;
+         case "T": value = 10;
             break;
-         case "j": value = 11;
+         case "J": value = 11;
             break;
-         case "q": value = 12;
+         case "Q": value = 12;
             break;
-         case "k": value = 13;
+         case "K": value = 13;
             break;
-         case "a": value = 14;
+         case "A": value = 14;
             break;
          default:
             System.out.println("This is not a valid card.");

@@ -28,13 +28,8 @@ public class Player {
 
       //Converts String array to card object array
       for (index = 0; index < playerCards.length; index++) {
-         if (playerCards[index].length() > 2) {
-            face = playerCards[index].substring(0, 2);
-            suite = playerCards[index].substring(2, 3);
-         } else {
             face = playerCards[index].substring(0, 1);
             suite = playerCards[index].substring(1, 2);
-         }
          Card card = new Card(face, suite);
          playerHand[index] = card;
       }
@@ -111,7 +106,7 @@ public class Player {
          score = fullHouseTest(bestSix);
       }else if(monoChromaTest(bestSix) == 8.0){
          score = monoChromaTest(bestSix);
-      } else if(fiveStraightTest(bestSix) == 7.0){
+      } else if(fiveStraightTest(bestSix) > 7.0){
          score = fiveStraightTest(bestSix);
       }else if(swingersTest(bestSix) == 6.0){
          score = swingersTest(bestSix);
@@ -258,14 +253,14 @@ public class Player {
       //King and Queen both exist as pairs
       if((countValue(cardArr, 13) == 2) && (countValue(cardArr, 12) == 2 )){
          //Retrieve index of king & queen
-         kingIndex = cardIndex(cardArr, "k");
-         queenIndex = cardIndex(cardArr, "q");
+         kingIndex = cardIndex(cardArr, "K");
+         queenIndex = cardIndex(cardArr, "Q");
          //Retrieve cards of same suite
          relatedToKing = findSuit(cardArr, cardArr[kingIndex].face,
             cardArr[kingIndex].suite);
          relatedToQueen = findSuit(cardArr, cardArr[queenIndex].face,
             cardArr[kingIndex].suite);
-         if(relatedToKing.contains("q") && relatedToQueen.contains("k")){
+         if(relatedToKing.contains("Q") && relatedToQueen.contains("K")){
             return 6.0;
          }
       }
@@ -276,6 +271,7 @@ public class Player {
       int[] cardValues;
       int repeatFlag = 0;
       int count = 0;
+      int highOfStraight = 0;
 
       cardValues = cardsToValues(cardArr);
       for(int index = 0;index < 5;index++){
@@ -284,10 +280,19 @@ public class Player {
          if(cardValues[index] == cardValues[index + 1] - 1){
             count++;
             if(count == 4){
-               return 7.0;
+               //Determine which card is highest of flush
+               if(cardValues[4] == cardValues[5] ||
+                  cardValues[4] == cardValues[5] - 1){
+                  highOfStraight = cardValues[5];
+               } else{
+                  highOfStraight = cardValues[4];
+               }
+               return 7.0 + highOfStraight * .01;
             }
          } else if(cardValues[index] == cardValues[index + 1]){
             repeatFlag++;
+         } else{
+            count = 0;
          }
       }
       return 0.0;
@@ -361,15 +366,15 @@ public class Player {
    }
 
    public double monarchyTest(Card[] cardArr){
-      int jackIndex = cardIndex(cardArr, "j");
+      int jackIndex = cardIndex(cardArr, "J");
       int jackCount = countValue(cardArr, 11);
       int queenCount = countValue(cardArr, 12);
       int kingCount = countValue(cardArr, 13);
 
       if(jackCount == 1 && queenCount == 1 && kingCount == 1) {
          //Check if king and queen of same suite as jack exist
-         if (findSuit(cardArr, "j", cardArr[jackIndex].suite).contains("q") &&
-            findSuit(cardArr, "j", cardArr[jackIndex].suite).contains("k")) {
+         if (findSuit(cardArr, "J", cardArr[jackIndex].suite).contains("Q") &&
+            findSuit(cardArr, "J", cardArr[jackIndex].suite).contains("K")) {
             return 11.0;
          }
       }
@@ -453,15 +458,8 @@ public class Player {
 
       valuesArr = cardsToValues(cardArr);
       sort(valuesArr);
-
-      //Determine which array index hosts high card of straight
-      if(valuesArr[4] == valuesArr[5]-1) {
-         highCard = valuesArr[5];
-      } else{
-         highCard = valuesArr[4];
-      }
-
-      if(relatedCards.length() >= 5){
+      highCard = valuesArr[5];
+      if(relatedCards.length() == 5){
          return 16.0 + highCard * 0.01;
       } else{
          return 0.0;
@@ -546,7 +544,7 @@ public class Player {
    public double fiveStraightFlushTest(Card[] cardArr){
       double result = 0.0;
       double flushResult = 0.0;
-      if(fiveStraightTest(cardArr) == 7.0){
+      if(fiveStraightTest(cardArr) > 7.0){
          flushResult = flushTest(cardArr);
          if( flushResult > 16.0){
             // Expose the high card in flushResult arithmetically
