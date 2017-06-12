@@ -18,12 +18,12 @@ public class Driver {
       //dealer.readAllCards();
 
 
-      Card card1 = new Card("a","c");
-      Card card2= new Card("2","c");
-      Card card3 = new Card("2","c");
-      Card card4 = new Card("a","c");
-      Card card5 = new Card("2","c");
-      Card card6 = new Card("a","c");
+      Card card1 = new Card("8","c");
+      Card card2= new Card("6","h");
+      Card card3 = new Card("j","c");
+      Card card4 = new Card("q","c");
+      Card card5 = new Card("10","c");
+      Card card6 = new Card("9","c");
 
       Card[] cardArr = {card1,card2,card3,card4,card5,card6};
 

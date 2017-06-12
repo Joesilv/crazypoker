@@ -83,11 +83,15 @@ public class Player {
       double score = 0;
 
 
-
-
-
-
-      if(tripletsTest(bestSix) > 17.0){
+      if(fiveStraightFlushTest(bestSix) > 21.0){
+         score = fiveStraightFlushTest(bestSix);
+      }else if(kingdomTest(bestSix) == 20.0){
+         score = kingdomTest(bestSix);
+      }else if(homosapiensTest(bestSix) > 19.0){
+         score = homosapiensTest(bestSix);
+      }else if(overfullHouseTest(bestSix) > 18.0){
+         score = overfullHouseTest(bestSix);
+      }else if(tripletsTest(bestSix) > 17.0){
          score = tripletsTest(bestSix);
       }else if(flushTest(bestSix) > 16.0){
          score = flushTest(bestSix);
@@ -449,10 +453,15 @@ public class Player {
 
       valuesArr = cardsToValues(cardArr);
       sort(valuesArr);
-      highCard = valuesArr[5];
 
-      if(relatedCards.length()== 5){
+      //Determine which array index hosts high card of straight
+      if(valuesArr[4] == valuesArr[5]-1) {
+         highCard = valuesArr[5];
+      } else{
+         highCard = valuesArr[4];
+      }
 
+      if(relatedCards.length() >= 5){
          return 16.0 + highCard * 0.01;
       } else{
          return 0.0;
@@ -482,21 +491,73 @@ public class Player {
       return result;
    }
 
-   /*public int overfullHouseTest(){
+   public double overfullHouseTest(Card[] cardArr){
+      boolean flagOne = false;
+      boolean flagTwo = false;
+      double fourCard = 0;
+      double pair = 0 ;
+      for(int index = 0;index < 6;index++){
+         //countValue(cardArr, cardArr[index].value);
+         if(countValue(cardArr, cardArr[index].value) == 4){
+            fourCard = cardArr[index].value;
+            flagOne = true;
+         }else if(countValue(cardArr, cardArr[index].value) == 2){
+            pair = cardArr[index].value;
+            flagTwo = true;
+         }
+      }
+      if(flagOne && flagTwo){
+         return 18.0 + (fourCard * .01)+ (pair * .0001) ;
+      } else{
+         return 0.0;
+      }
 
    }
-*/
-   /*public int homosapiensTest(){
+   public double homosapiensTest(Card[] cardArr){
+      int value = 0;
+      //boolean faceFlag = true;
+      int[] valuesArr = cardsToValues(cardArr);
 
-   }*/
+      sort(valuesArr);
+      for(int index = 0;index < 6;index++){
+         value = valuesArr[index];
+         if( value != 11 && value != 12 &&value != 13){
+            return  0.0;
+         }
+      }
+         value = valuesArr[5];
+         return 19.0 + value * 0.01;
+   }
 
-   /*public int kingdomTest(){
+   public double kingdomTest(Card[] cardArr){
+      double result = 0.0;
+      if(monarchyTest(cardArr) == 11.0){
+         if(flushTest(cardArr) > 16){
+            result = 20.0;
+         } else {
+            result = 0.0;
+         }
+      }else{
+         result = 0.0;
+      }
+      return result;
+   }
 
-   }*/
-
-   /*public int fiveStraightFlushTest(){
-
-   }*/
+   public double fiveStraightFlushTest(Card[] cardArr){
+      double result = 0.0;
+      double flushResult = 0.0;
+      if(fiveStraightTest(cardArr) == 7.0){
+         flushResult = flushTest(cardArr);
+         if( flushResult > 16.0){
+            // Expose the high card in flushResult arithmetically
+            flushResult = (flushResult - 16) * 100;
+            result = 21 + flushResult * 0.01;
+         }
+      }else{
+         result = 0.0;
+      }
+      return result;
+   }
 
    /*public int sixStraightFlushTest(){
 
