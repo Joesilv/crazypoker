@@ -11,13 +11,13 @@ public class Driver {
 
    public static void main(String args[]){
 
-      double score = 0;
       Dealer dealer = new Dealer();
-      Player player = new Player();
+      dealer.readAllCards(args);
 
-      //dealer.readAllCards();
 
-      //FOR TESTING USE ONLY VALID CARDS, NO DUPLICATES OF SAME SUITE
+
+
+/*     //FOR TESTING USE ONLY VALID CARDS, NO DUPLICATES OF SAME SUITE
       //OR ESLE FUNCTIONS WILL NOT PERFORM AS INTENDED
       Card card1 = new Card("Q","d");
       Card card2= new Card("Q","s");
@@ -29,7 +29,7 @@ public class Driver {
       Card[] cardArr = {card1,card2,card3,card4,card5,card6};
 
       score = player.score(card1,card2,card3,card4,card5,card6);
-      System.out.println(score);
+      System.out.println(score);*/
 
    }
 }

@@ -19,26 +19,31 @@ public class Dealer {
    private int cardsCommunity = 5;
 
    // Reads user input, distributes players 8 cards each
-   public void readAllCards(){
+   public void readAllCards(String[] argInput){
       int index = 0;
       int startCut = 5;
       int endCut = 8;
 
-      promptInput();
+      promptInput(argInput);
       playerScores = new Player[numPlayers];
       //Loop for every player
          for(index = 0; index < numPlayers;index++) {
             //create a player object
-            Player player = new Player();
+            Player player = new Player(index + 1);
             //distribute their 3 cards
             player.receiveCards(copyArray(dealtCards,5,startCut,endCut, 8));
             startCut += 3;
             endCut +=3;
             //determine their best combination
             player.tryAllCards();
-            //save their score in bit organization
-            //iterate through dealtCards to prepare delivery of new cards
+            playerScores[index] = player;
+
          }//end
+      for(index = 0;index < numPlayers;index++){
+         System.out.println("Player " + playerScores[index]
+            .playerNumber + ": " + playerScores[index].highestScore);
+      }
+
 
    }
 
@@ -47,22 +52,28 @@ public class Dealer {
    }*/
 
    // Prompts user to input , fills array.
-   public void promptInput(){
-      String userInput = "";
-      String[] allCards;
+   public void promptInput(String[] argInput){
+      //String userInput = "";
+      //String[] allCards;
       int cardsAllPlayers;
-
+/*
       Scanner scan = new Scanner(System.in);
 
       System.out.println("Welcome To Crazy Poker \nInput All Cards:");
       userInput = scan.nextLine();
-      allCards = userInput.split(" ");
+      allCards = userInput.split(" ");*/
       do{
-         dealtCards = allCards;
+         dealtCards = argInput;
          cardsAllPlayers = dealtCards.length - cardsCommunity;
          numPlayers = cardsAllPlayers / cardsPerPlayer;
       } while((dealtCards.length < 11) || (cardsAllPlayers % 3) != 0);
    }
+
+/*   public void sortPlayerScores(){
+      for(int index = 0;index < playerScores.length;index++){
+
+      }
+   }*/
 
    //Print an Array
    public void printArray(String[] arr) {

@@ -15,11 +15,15 @@ import static java.util.Arrays.sort;
 
 public class Player {
 
-   private double highestScore = 0.0;
+   public int playerNumber;
+   public double highestScore = 0.0;
    private double currentScore = 0.0;
    Card[] playerHand = new Card[8];
 
 
+   public Player (int assignedNumber){
+      playerNumber = assignedNumber;
+   }
    public void receiveCards(String[] playerCards) {
 
       int index = 0;
@@ -33,7 +37,7 @@ public class Player {
          Card card = new Card(face, suite);
          playerHand[index] = card;
       }
-      printCardArray(playerHand);
+      //printCardArray(playerHand);
    }
 
    public void printCardArray(Card[] arr) {
@@ -46,7 +50,7 @@ public class Player {
       System.out.println();
    }
 
-   public void tryAllCards() {
+   public double tryAllCards() {
 
       for (int first = 0; first < 3; first++) {
          for (int second = first + 1; second < 4; second++) {
@@ -69,7 +73,7 @@ public class Player {
             }
          }
       }
-      System.out.println(highestScore);
+      return highestScore;
    }
 
    public double score(Card first, Card second, Card third, Card fourth,
