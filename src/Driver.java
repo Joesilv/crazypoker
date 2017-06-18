@@ -19,12 +19,12 @@ public class Driver {
 
       //FOR TESTING USE ONLY VALID CARDS, NO DUPLICATES OF SAME SUITE
       //OR ESLE FUNCTIONS WILL NOT PERFORM AS INTENDED
-      Card card1 = new Card("K","c");
-      Card card2= new Card("J","c");
-      Card card3 = new Card("Q","h");
-      Card card4 = new Card("J","h");
-      Card card5 = new Card("Q","c");
-      Card card6 = new Card("K","h");
+      Card card1 = new Card("Q","d");
+      Card card2= new Card("Q","s");
+      Card card3 = new Card("K","s");
+      Card card4 = new Card("Q","h");
+      Card card5 = new Card("K","h");
+      Card card6 = new Card("K","d");
 
       Card[] cardArr = {card1,card2,card3,card4,card5,card6};
 

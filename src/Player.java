@@ -77,7 +77,9 @@ public class Player {
       Card[] bestSix = bestSixArr(first, second, third, fourth, fifth, sixth);
       double score = 0;
 
-      if(politicsTest(bestSix) == 24.0){
+      if(dinnerPartyTest(bestSix) == 25.0){
+         score = dinnerPartyTest(bestSix);
+      } else if(politicsTest(bestSix) == 24.0){
          score = politicsTest(bestSix);
       }else if(orgyTest(bestSix) == 23.0){
          score = orgyTest(bestSix);
@@ -625,9 +627,19 @@ public class Player {
       return 0.0;
    }
 
-   /*public int dinnerPartyTest(){
-
-   }*/
+   public double dinnerPartyTest(Card[] cardArr){
+      String suits = "";
+      if(countValue(cardArr, 12) == 3 && countValue(cardArr, 13) == 3){
+         for(int index = 0;index < 6;index++){
+            suits =findSuit(cardArr,cardArr[index].face,cardArr[index].suite);
+            if( !(suits.equals("K")||suits.equals("Q")) ){
+               return 0.0;
+            }
+         }
+         return 25.0;
+      }
+      return 0.0;
+   }
 
    // Return number of times a value appears in an array
    public int countValue(Card[] cardArr, int value) {
