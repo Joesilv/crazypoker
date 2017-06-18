@@ -17,13 +17,14 @@ public class Driver {
 
       //dealer.readAllCards();
 
-
-      Card card1 = new Card("6","c");
-      Card card2= new Card("7","c");
-      Card card3 = new Card("2","c");
-      Card card4 = new Card("9","c");
-      Card card5 = new Card("T","c");
-      Card card6 = new Card("K","c");
+      //FOR TESTING USE ONLY VALID CARDS, NO DUPLICATES OF SAME SUITE
+      //OR ESLE FUNCTIONS WILL NOT PERFORM AS INTENDED
+      Card card1 = new Card("K","c");
+      Card card2= new Card("J","c");
+      Card card3 = new Card("Q","h");
+      Card card4 = new Card("J","h");
+      Card card5 = new Card("Q","c");
+      Card card6 = new Card("K","h");
 
       Card[] cardArr = {card1,card2,card3,card4,card5,card6};
 

@@ -77,8 +77,13 @@ public class Player {
       Card[] bestSix = bestSixArr(first, second, third, fourth, fifth, sixth);
       double score = 0;
 
-
-      if(fiveStraightFlushTest(bestSix) > 21.0){
+      if(politicsTest(bestSix) == 24.0){
+         score = politicsTest(bestSix);
+      }else if(orgyTest(bestSix) == 23.0){
+         score = orgyTest(bestSix);
+      } else if(sixStraightFlushTest(bestSix) > 22.0){
+         score = sixStraightFlushTest(bestSix);
+      } else if(fiveStraightFlushTest(bestSix) > 21.0){
          score = fiveStraightFlushTest(bestSix);
       }else if(kingdomTest(bestSix) == 20.0){
          score = kingdomTest(bestSix);
@@ -557,17 +562,68 @@ public class Player {
       return result;
    }
 
-   /*public int sixStraightFlushTest(){
+   public double sixStraightFlushTest(Card[] cardArr){
+      int[] cardValues = cardsToValues(cardArr);
+      int count = 0;
+      int highCard = 0;
 
-   }*/
-
-   /*public int orgyTest(){
+      for(int index = 0;index < 5;index++){
+         if(cardValues[index] == cardValues[index + 1]-1){
+            count++;
+         } else{
+            return 0.0;
+         }
+      }
+      //
+      if(count == 5 && flushTest(cardArr) > 16 ){
+         highCard = cardValues[5];
+         return 22 + highCard *.01;
+      }
+      return 0.0;
 
    }
-*/
-   /*public int politicsTest(){
 
-   }*/
+   public double orgyTest(Card[] cardArr){
+      int[] valueArr = cardsToValues(cardArr);
+
+      for(int index = 0; index < 6;index++){
+         // Eleven and twelve represent jack and queen
+
+         if(valueArr[index] != 11 && valueArr[index] != 12){
+            return 0.0;
+         }
+      }
+      //This will only return 23.0 if for loop runs completely through array
+      return 23.0;
+   }
+   public double politicsTest(Card[] cardArr){
+      String suits = "";
+      String[] allCases = {"QK","KQ","JK","KJ","JQ","QJ"};
+      boolean flag = false;
+      int one = 0;
+
+      if(countValue(cardArr, 11) == 2 &&
+         countValue(cardArr, 12) == 2 &&
+         countValue(cardArr, 13) == 2)
+      {
+         do {
+            for (one = 0; one < 6; one++) {
+               flag = false;
+               suits = findSuit(cardArr, cardArr[one].face, cardArr[one].suite);
+               for (int two = 0; two < 6; two++) {
+                  if (suits.equals(allCases[two])) {
+                     flag = true;
+                  }
+               }
+               //Returns 0 if the monarchy is broken
+               if(flag == false){return 0.0 ;}
+            }
+            if(one == 6){break;}
+         }while (flag == true);
+         return 24.0;
+      }
+      return 0.0;
+   }
 
    /*public int dinnerPartyTest(){
 
